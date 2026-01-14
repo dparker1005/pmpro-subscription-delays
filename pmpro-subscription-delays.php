@@ -119,10 +119,10 @@ function pmprosd_pmpro_profile_start_date( $start_date, $order ) {
 	if ( ! is_numeric( $subscription_delay ) ) {
 		$start_date = pmprosd_convert_date( $subscription_delay );
 	} else {
-		$start_date = date( 'Y-m-d', strtotime( '+ ' . intval( $subscription_delay ) . ' Days', current_time( 'timestamp' ) ) ) . 'T0:0:0';
+		$start_date = date( 'Y-m-d', strtotime( '+ ' . intval( $subscription_delay ) . ' Days', current_time( 'timestamp' ) ) ) . 'TH:i:s';
 	}
 	
-	$today = date( 'Y-m-d\T0:0:0', current_time( 'timestamp' ) );
+	$today = date( 'Y-m-d\TH:i:s', current_time( 'timestamp' ) );
 	
 	// Stripe does strange things if the profile start is before the current date!
 	if ( $start_date < $today ) {
@@ -161,11 +161,11 @@ function pmprosd_pmpro_checkout_level( $level ) {
 	if ( ! is_numeric( $subscription_delay ) ) {
 		$level->profile_start_date = pmprosd_convert_date( $subscription_delay );
 	} else {
-		$level->profile_start_date = date( 'Y-m-d', strtotime( '+ ' . intval( $subscription_delay ) . ' Days', current_time( 'timestamp' ) ) ) . 'T0:0:0';
+		$level->profile_start_date = date( 'Y-m-d', strtotime( '+ ' . intval( $subscription_delay ) . ' Days', current_time( 'timestamp' ) ) ) . 'TH:i:s';
 	}
 
 	// Make sure the profile start date is not before the current date.
-	$today = date( 'Y-m-d\T0:0:0', current_time( 'timestamp' ) );
+	$today = date( 'Y-m-d\TH:i:s', current_time( 'timestamp' ) );
 	if ( $level->profile_start_date < $today ) {
 		$level->profile_start_date = $today;
 	}
@@ -368,7 +368,7 @@ function pmprosd_convert_date( $date ) {
 	if ( strpos( $set_date, ':') !== false ) {
 	    $set_date = $date;
     } else {
-	    $set_date .= 'T0:0:0';
+	    $set_date .= 'T12:00:00';
     }
     
 	return $set_date;
